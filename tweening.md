@@ -15,32 +15,32 @@ Features:
   * nested, overlapping timelines with relative start times.
   * timelines can themselves be tweened as a unit using all control variables.
   * stagger tweens: alternate end-values over a list of targets.
-  * relative values.
   * extendable attribute types and interpolation functions.
   * built-in interpolators for numbers, integers and lists of numbers.
-  * pause/resume/restart/reverse for tweens and timelines.
+  * relative values incl. directional rotation.
   * no allocations while tweening.
 
 ## Tweens
 
 ### `tweening() -> tw`
 
-Create a new `tweening` module. For extending the `tweening` module with
-new attribute types and interpolators without affecting the original module
-table.
+Create a new `tweening` module. Useful for extending the `tweening` module
+with new attribute types and interpolators without affecting the original
+module table.
 
 ### `tw:tween(t) -> tween`
 
-Create a new tween. A tween is an object which interpolates a single value
-from a target object using an easing function and other timing parameters.
+Create a new tween. A tween is an object which can be used to interpolate a
+single value from a target object _in time_ using an easing function and
+other timing parameters.
 
-__NOTE:__ `t` itself is turned into a tween (no new table is created).
+> __NOTE:__ `t` itself is turned into a tween (no new table is created).
 
 #### Timing model: fields
 
 -------------- ----------- ---------------------------------------------------
 __field__      __default__ __description__
-`start`        `clock()`   start clock
+`start`        `clock()`   start clock (becomes relative when added to timeline)
 `duration`     `1`         duration of one iteration (can't be negative)
 `delay`        `0`         delay before the first iteration starts
 `speed`        `1`         speed of the entire tween; must be > 0
@@ -58,27 +58,29 @@ __field__      __default__ __description__
 
 ---------------------------------- -------------------------------------------
 __method__                         __description__
-`tween:start_clock() -> t`         start clock
-`tween:total_duration() -> dt`     duration incl. repeats (can be infinite)
+`tween:start_clock() -> t`         absolute start clock
+`tween:total_duration() -> dt`     total duration incl. repeats (can be infinite)
 `tween:end_clock() -> t`           end clock (can be infinite)
-`tween:is_infinite() -> bool`      true when loop or duration are infinite
-`tween:status(t) -> status`        status at clock: 'before_start', 'running', 'paused', 'finished'
-`tween:total_progress(t) -> P`     progress in `0..1` incl. repeats (can be infinite)
+`tween:is_infinite() -> bool`      true if `loop` or `duration` are infinite
+`tween:status([t]) -> status`      status at clock: 'before_start', 'running', 'paused', 'finished'
+`tween:total_progress([t]) -> P`   progress in `0..1` at clock incl. repeats (can be infinite)
 `tween:clock_at(P) -> t`           clock at total progress
 `tween:is_reverse(i) -> bool`      true if iteration `i` goes backwards
-`tween:progress(t) -> p, i`        local progress in `0..1` and iteration index
-`tween:distance(p, i) -> d`        eased progress
+`tween:progress([t]) -> p, i`      linear progress in `0..1` in current iteration and iteration index
+`tween:distance(p, i) -> d`        eased progress in `0..1` in current iteration and iteration index
 `tween:pause()`                    pause (sets `paused` field to `true`)
-`tween:resume()`                   resume (sets `paused` field to false)
+`tween:resume()`                   resume (sets `paused` field to `false` and advances `start`)
 `tween:stop()`                     stop and remove from timeline
-`tween:restart()`                  restart
+`tween:restart()`                  restart (advances `start`)
 `tween:reset()`                    reset
-`tween:update(t)`                  update value at clock
+`tween:update([t])`                update value at clock
 `tween:seek(P)`                    update value at total progress
 `tween:totarget() -> obj`          convert to tweenable object
 ---------------------------------- -------------------------------------------
 
 __NOTE:__ The tween doesn't store the current time or the current value.
+Whenever the optional `t` argument indicating a time value is not given,
+the current clock is used instead.
 
 #### Animation model: fields
 
