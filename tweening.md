@@ -7,7 +7,7 @@ tagline: tweening for animation
 A library for the management of gradual value changes for the purposes of
 animation.
 
-Features:
+## Features
 
   * control variables: `duration`, `delay`, `speed`, `loop`, `reverse`,
   `yoyo`, `ease`, `way`, `loop_start`.
