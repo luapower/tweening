@@ -16,7 +16,6 @@ animation.
   * timelines can be tweened as a unit using all timing parameters (see below).
   * stagger tweens: alternate end-values over a list of targets.
   * extendable attribute types and interpolation functions.
-  * built-in interpolators for numbers, integers and lists of numbers.
   * relative values incl. directional rotation.
   * no allocations while tweening.
 
@@ -25,14 +24,14 @@ animation.
 ### `tw:tween(t) -> tween`
 
 Create a new tween. A tween is an object which repeatedly updates a value on
-a target object _in time_ based on an interpolation function and other timing
+a target object _in time_ based on an interpolation function and timing
 parameters.
 
 > __NOTE:__ `t` itself is turned into a tween (no new table is created).
 
 #### Timing model
 
-__field__      __default__ __description__
+__field__      __default__  __description__
 -------------- ------------ --------------------------------------------------
 `start`        `clock()`    start clock (becomes relative when added to timeline)
 `duration`     `1`          duration of one iteration (can't be negative)
@@ -43,7 +42,7 @@ __field__      __default__ __description__
 `yoyo`         `true`       alternate between forwards and backwards on each iteration
 `ease`         `'quad'`     ease function `f(t) -> d` or name from [easing]
 `way`          `'in'`       easing way: `'in'`, `'out'`, `'inout'` or `'outin'`
-`loop_start`   `0`          progress at start (can be fractional)
+`loop_start`   `0`          1.25 means start at 25% on the _second_ iteration
 `paused`       `false`      start paused
 `clock() -> t` `tw:clock()` clock source
 
