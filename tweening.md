@@ -124,7 +124,9 @@ __method__                   __description__
 `tween:clone() -> tween`     clone a tween
 `tween:totarget() -> obj`    convert to tweenable object
 
-### `tween:
+### `tween:clone() -> tween`
+
+Clone a tween in its current state.
 
 ### `tween:totarget() -> obj`
 
