@@ -46,8 +46,8 @@ __field__      __default__   __description__
 `speed`        `1`           speed factor; must be > 0
 `offset`       `0`           progress at start
 `running`      `true`        running or paused
-`clock`        `nil`         current clock when running, set by `update()`
-`resume_clock` `nil`         current clock when paused, set by `update()`
+`clock`        `start`       current clock when running, set by `update()`
+`resume_clock` `clock`       current clock when paused, set by `update()`
 
 __NOTE__: The difference between `start` and `delay` is that when in the
 `delay` poriton, the tween is considered to be running, and the target value
