@@ -65,9 +65,9 @@ __method__                        __description__
 `distance([t]) -> d`              eased progress in current iteration (in `0..1`)
 `update([t])`                     update internal clock and target value
 
-__NOTE__: `progress()/clock_at()/seek()` map time to `0..1` while
-`loop_progress()/loop_clock_at()/loop_seek()` map time to `0..loop`. The
-first set is more convenient but doesn't work when `loop` is `inf`.
+__NOTE__: `progress()`, `clock_at()` and `seek()` map time to `0..1` while
+`loop_progress()`, `loop_clock_at()` and `loop_seek()` map time to `0..loop`.
+The first set is more convenient but doesn't work when `loop` is `inf`.
 
 #### Changing the state of the tween
 
