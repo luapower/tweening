@@ -170,19 +170,19 @@ __NOTE:__ `t` itself is turned into a timeline (no new table is created).
 A timeline is itself a tween, containing all the fields and methods of the
 timing model of a tween (but none of the fields and methods of the animation
 model since it's not animating a target object, it's updating other tweens).
-This means that a timeline can be used to _tween_ the _total progress_ of its
+This means that a timeline can be used to _tween_ the _progress_ of its
 child tweens instead of just updating them on the same clock, since it has a
 `distance` resulting from its timing model. It also means that the timeline
-can be itself tweened on its _total progress_ (which only works if the
-timeline is _not_ infinite).
+can be itself tweened on its _progress_ (which only works if the timeline is
+_not_ infinite).
 
 ### Tweening other tweens
 
 Setting `tween_progress = true` on a timeline switches the timeline into
-tweening its child tweens on their _total progress_ (so tweening a temporal
-value) instead of just updating them on the same clock. In this mode, the
+tweening its child tweens on their _progress_ (so tweening a temporal value)
+instead of just updating them on the same clock. In this mode, the
 child's `start` and `duration` are ignored: instead, the timeline's `distance`
-is interpolated over the child's total progress.
+is interpolated over the child's progress.
 
 ### Timeline-specific fields and methods
 
@@ -197,13 +197,13 @@ __field__        __default__ __description__
 
 __method__                  __description__
 --------------------------- --------------------------------------------------
-`add(tween[, start])`       add a tween
+`add(tween|opt[, start])`   add a tween
 `replace(tween[, start])`   replace/add a tween
 `remove(tween|attr|target)` remove matching tweens recursively
 `clear() -> true|false`     remove all tweens (non-recursively)
 `status()`                  adds `'empty'`
 
-### `tl:add(tween|options[, start]) -> tl`
+### `tl:add(tween|opt[, start]) -> tl`
 
 Add a new tween to the timeline, set its `start` field and its `timeline`
 field, and, if `auto_duration` is `true`, increase timeline's `duration`
@@ -212,14 +212,15 @@ is relative to the timeline's start time. If `start` is not given, the
 tween is added to the end of the timeline (when the timeline's duration is
 infinite then the tween's start is set to `0` instead).
 
-If an `options` table is given instead, multiple tweens are created and
+If an options table is given instead, multiple tweens are created and
 added to the timeline as follows: `targets` specifies a list of targets,
-`from` and `to` specifies a table of from/to attributes and values.
-`cycle_from`, `cycle_to`, `cycle` specifies a table of from/to attributes
-and a list of values for each attribute to pick for each target.
+otherwise `target` specifies a single target, `from` and `to` specifies a
+table of from/to attribute -> value pairs. `cycle_from`, `cycle_to`, `cycle`
+specifies a table of from/to attribute -> list-of-values pairs such that
+values will be distributed to each target in a round-robin fashion.
 
-__NOTE:__ `start` can be a relative value relative to the current total
-duration, eg. `+=500ms` means half a second after the last tween, while
+__NOTE:__ `start` can be a relative value relative to the timeline's current
+total duration, eg. `+=500ms` means half a second after the last tween, while
 `500ms` means half a second from the start of the timeline.
 
 ### `tl:replace(tween[, start]) -> tl`
