@@ -16,6 +16,7 @@ animation.
   * stagger tweens: alternate end-values over a list of targets.
   * extensible attribute types, value converters and interpolation functions.
   * relative values including directional rotation.
+  * pause/resume/restart/reverse individual tweens even when in a timeline.
   * no allocations while tweening.
 
 ## Tweens
