@@ -44,8 +44,10 @@ end
 
 local function copy(t, dt)
 	local dt = dt or {}
-	for k,v in pairs(t) do
-		dt[k] = v
+	if t then
+		for k,v in pairs(t) do
+			dt[k] = v
+		end
 	end
 	return dt
 end
@@ -123,6 +125,7 @@ function tw:ease(ease, way, progress, loop_index, ...)
 	return easing.ease(ease, way, progress, ...)
 end
 
+--find an attribute type based on its name
 function tw:_attr_type(attr_type, attr)
 	local attr_type = attr_type or self._type[attr]
 	if not attr_type then
@@ -155,7 +158,7 @@ function tw:current_clock()
 end
 
 function tw:clock(clock)
-	if clock ~= nil then
+	if clock ~= nil then --freeze the clock
 		self._clock = clock
 	end
 	return self._clock or self:current_clock()
@@ -512,16 +515,32 @@ function timeline:_add_tween(tween, start)
 end
 
 function timeline:_add_tweens(t, start)
-	for attr in pairs(t.from or t.to) do
+	local attrs = {}
+	copy(t.from, attrs)
+	copy(t.to, attrs)
+	copy(t.cycle_from, attrs)
+	copy(t.cycle_to, attrs)
+	copy(t.cycle, attrs)
+	for attr in pairs(attrs) do
 		local targets = t.targets or {t.target}
+		local from = t.from and t.from[attr]
+		local to = t.to and t.to[attr]
+		local c_from = t.cycle_from or (t.from and t.cycle)
+		local c_to   = t.cycle_to   or (t.to   and t.cycle)
+		c_from = c_from and c_from[attr]
+		c_to   = c_to   and c_to  [attr]
 		for i,target in ipairs(t.targets) do
 			local tt = copy(t)
-			tt.from = tt.from[attr]
-			tt.to = tt.to[attr]
+			tt.attr = attr
+			tt.from = c_from and c_from[(i - 1) % #c_from + 1] or from
+			tt.to = c_to and c_to[(i - 1) % #c_to + 1] or to
 			tt.target = target
 			tt.start = 0
-			local tween = self:tween(tt)
-			tl:add(tween, start)
+			tt.cycle_from = nil
+			tt.cycle_to = nil
+			tt.cycle = nil
+			local tween = self.tweening:tween(tt)
+			self:add(tween, start)
 			start = tween.start --parsed start, same for all tweens
 		end
 	end
@@ -533,6 +552,8 @@ function timeline:add(t, start)
 		return self:_add_tween(t, start)
 	elseif t.from or t.to then
 		return self:_add_tweens(t, start)
+	else
+		error'invalid arguments'
 	end
 end
 
