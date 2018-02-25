@@ -101,8 +101,10 @@ __field__          __default__         __description__
 `get_value() -> v` `target[attr] -> v` value getter
 `set_value(v)`     `target[attr] = v`  value setter
 
-__NOTE:__ Animation model fields are read/only. See below for how to add
-attribute type matching rules and interpolators.
+See below for how to add attribute type matching rules and interpolators.
+
+__NOTE:__ Animation model fields are read/only. Changing them requires a call
+to `reset()`.
 
 ### Relative values
 
