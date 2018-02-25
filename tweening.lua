@@ -497,7 +497,7 @@ function timeline:can_be_replaced_by(tween)
 	return false
 end
 
-function timeline:add(tween, start)
+function timeline:_add_tween(tween, start)
 	table.insert(self.tweens, tween)
 	if start then
 		tween.start = self:parse_value(start, self:total_duration())
@@ -509,6 +509,31 @@ function timeline:add(tween, start)
 	tween.timeline = self
 	self:_adjust(tween)
 	return self
+end
+
+function timeline:_add_tweens(t, start)
+	for attr in pairs(t.from or t.to) do
+		local targets = t.targets or {t.target}
+		for i,target in ipairs(t.targets) do
+			local tt = copy(t)
+			tt.from = tt.from[attr]
+			tt.to = tt.to[attr]
+			tt.target = target
+			tt.start = 0
+			local tween = self:tween(tt)
+			tl:add(tween, start)
+			start = tween.start --parsed start, same for all tweens
+		end
+	end
+	return self
+end
+
+function timeline:add(t, start)
+	if t.__index then
+		return self:_add_tween(t, start)
+	elseif t.from or t.to then
+		return self:_add_tweens(t, start)
+	end
 end
 
 function timeline:replace(tween, start)
@@ -604,27 +629,6 @@ function timeline:update_value()
 	else
 		self:_update_tweens()
 	end
-end
-
---sugar APIs -----------------------------------------------------------------
-
-function tw:to(target, duration, easing, way, end_values, start, loop, offset)
-	local tl = self:timeline{}
-	for attr, val in pairs(end_values) do
-		local tween = self:tween{target = target, duration = duration,
-			easing = easing, end_values = end_values, start = start, loop = loop}
-		tl:add(tween)
-	end
-	return tl
-end
-
-function tw:from(target, duration, easing, way, start_values, start, loop)
-	return self:tween{target = target, duration = duration, easing = easing,
-		start_values = start_values, start = start, loop = loop}
-end
-
-function tw:stagger_to(targets, duration, easing, way, end_values, start, loop, offset)
-
 end
 
 return tw
