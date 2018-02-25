@@ -108,9 +108,9 @@ to `reset()`.
 
 ### Relative values
 
-`start_value` and `end_value` can be given in the format `'<number>'`,
-`'<number><unit>`, `'<operator>=<number>'` or `'<operator>=<number><unit>'`,
-where `operator` can be `+`, `-` or `*` and `unit` can be:
+`from` and `to` can be given in the format `'<number>'`, `'<number><unit>`,
+`'<operator>=<number>'` or `'<operator>=<number><unit>'`, where `operator`
+can be `+`, `-` or `*` and `unit` can be:
 
 __unit__     __description__
 ------------ -----------------------------------------------------------------
