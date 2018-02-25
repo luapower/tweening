@@ -125,17 +125,17 @@ __unit__     __description__
 `deg_short`  rotation: shortest direction in degrees, converted to radians
 ------------ -----------------------------------------------------------------
 
-Examples: `+=10deg`, `25%`.
+Examples: `'+=10deg'`, `'25%'`.
 
-__NOTE:__ `25%` means 25% the initial value, while `+=25%` means 125% the
+__NOTE:__ `'25%'` means 25% the initial value, while `'+=25%'` means 125% the
 initial value.
 
 __NOTE:__ `cw` and `ccw` assume that increasing angles rotate the target
 clockwise (like cairo and other systems where the y-coord grows from top
 to bottom).
 
-__NOTE:__ `+=90deg` means "rotate the target another 90 degrees clockwise",
-while `90deg_cw` means "rotate the target to the 90 degrees mark by moving
+__NOTE:__ `'+=90deg'` means "rotate the target another 90 degrees clockwise",
+while `'90deg_cw'` means "rotate the target to the 90 degrees mark by moving
 clockwise". Don't combine relative rotations with `cw` and `ccw`.
 
 ### Misc.
@@ -220,8 +220,8 @@ specifies a table of from/to attribute -> list-of-values pairs such that
 values will be distributed to each target in a round-robin fashion.
 
 __NOTE:__ `start` can be a relative value relative to the timeline's current
-total duration, eg. `+=500ms` means half a second after the last tween, while
-`500ms` means half a second from the start of the timeline.
+total duration, eg. `'+=500ms'` means half a second after the last tween,
+while `'500ms'` means half a second from the start of the timeline.
 
 ### `tl:replace(tween[, start]) -> tl`
 
