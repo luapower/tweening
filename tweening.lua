@@ -380,7 +380,7 @@ end
 --of distance() gets horizontally flipped around the current clock point in
 --order to look like it's going back in time while actually continuing to go
 --forward.
---note: this can also be done more generally (without less knowledge of the
+--note: this can also be done more generally (with less knowledge of the
 --timing model) by just negating `speed`, but that wouldn't work with an
 --infinite tween because `start` would then be a fixed point in the future.
 function tween:reverse()
