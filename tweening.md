@@ -5,7 +5,7 @@ tagline: tweening & timelines for animation
 ## `local tw = require'tweening'`
 
 A library for the management of gradual value changes for the purposes of
-animation, inspired by [GreenSock](https://greensock.com/).
+animation, inspired by [GSAP](https://greensock.com/gsap).
 
 ## Features
 
